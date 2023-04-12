@@ -1,0 +1,12 @@
+CREATE OR REPLACE PACKAGE BODY /*name of an object is commented forsibly to raise an error*/ IS
+BEGIN
+    FUNCTION TEST_FUNCTION(
+        TEST_CHAR IN VARCHAR2(400 CHAR),
+        TEST_NUM IN INTEGER(10))
+    RETURN INTEGER(10) IS
+        TEST_ADD VARCHAR2(400) := q'"babba'robba"';
+    BEGIN
+        RETURN LENGTH(TEST_ADD || q'(smile'this)' || TEST_CHAR || ' and ' || TO_CHAR(TEST_NUM) || ' pirates');
+    END;
+END;
+
