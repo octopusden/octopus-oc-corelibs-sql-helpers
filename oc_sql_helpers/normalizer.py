@@ -71,7 +71,8 @@ class PLSQLNormalizer():
             "object_name": [{"start": re.compile(b'"'), "end": re.compile(b'"')}],
             "literal":[
                 {"start": re.compile(b"q'(.)", flags=re.I), "end": b"%s'", 
-                    "substitutes": {b"[": b"\]", b"{": b"\}", b"<": b"\>", b"(": b"\)"}},
+                    "substitutes": {b"[": b"\]", b"{": b"\}", b"<": b"\>", b"(": b"\)", b"?": b"\?", b".": b"\.", b"^": b"\^", b"$": b"\$", b"\\": b"\\\\", b"*": b"\*",
+                        b"+": b"\+", b"|": b"\|"}},
                 {"start": re.compile(b"'", flags=re.I), "end": re.compile(b"'")}],
             "comment":[
                 {"start": re.compile(b'(\s|^)\-\-'), "end": re.compile(b'\n')},
