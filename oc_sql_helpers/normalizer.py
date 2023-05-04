@@ -759,8 +759,9 @@ class PLSQLNormalizer():
         _tmp = tempfile.NamedTemporaryFile(suffix='.tmpsql', mode='w+b')
         try:
             self.normalize(fl, self._fl_full() + [PLSQLNormalizationFlags.no_literals], write_to=_tmp)
-        except PLSQLNormalizationError as _e:
-            logging.exception(_e)
+        except (PLSQLNormalizationError, RecursionError) as _e:
+            # we do not need log these exceptions as exceptions - it is OK for all use cases
+            logging.debug(_e, exc_info=True)
             self._reset()
 
         _tmp.close()
