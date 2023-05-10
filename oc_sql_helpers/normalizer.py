@@ -71,7 +71,8 @@ class PLSQLNormalizer():
             "object_name": [{"start": re.compile(b'"'), "end": re.compile(b'"')}],
             "literal":[
                 {"start": re.compile(b"q'(.)", flags=re.I), "end": b"%s'", 
-                    "substitutes": {b"[": b"\]", b"{": b"\}", b"<": b"\>", b"(": b"\)"}},
+                    "substitutes": {b"[": b"\]", b"{": b"\}", b"<": b"\>", b"(": b"\)", b"?": b"\?", b".": b"\.", b"^": b"\^", b"$": b"\$", b"\\": b"\\\\", b"*": b"\*",
+                        b"+": b"\+", b"|": b"\|"}},
                 {"start": re.compile(b"'", flags=re.I), "end": re.compile(b"'")}],
             "comment":[
                 {"start": re.compile(b'(\s|^)\-\-'), "end": re.compile(b'\n')},
@@ -758,8 +759,9 @@ class PLSQLNormalizer():
         _tmp = tempfile.NamedTemporaryFile(suffix='.tmpsql', mode='w+b')
         try:
             self.normalize(fl, self._fl_full() + [PLSQLNormalizationFlags.no_literals], write_to=_tmp)
-        except PLSQLNormalizationError as _e:
-            logging.exception(_e)
+        except (PLSQLNormalizationError, RecursionError) as _e:
+            # we do not need log these exceptions as exceptions - it is OK for all use cases
+            logging.debug(_e, exc_info=True)
             self._reset()
 
         _tmp.close()
