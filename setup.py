@@ -1,9 +1,9 @@
 from setuptools import setup
 
-__version="1.0.1"
+__version="1.0.2"
 
 spec = {
-    "name": "oc_sql_helpers",
+    "name": "oc-sql-helpers",
     "version": __version,
     "license": "LGPLv2",
     "description": "Helper classes for PL/SQL source code files",
