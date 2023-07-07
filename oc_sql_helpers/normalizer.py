@@ -71,8 +71,24 @@ class PLSQLNormalizer():
             "object_name": [{"start": re.compile(b'"'), "end": re.compile(b'"')}],
             "literal":[
                 {"start": re.compile(b"q'(.)", flags=re.I), "end": b"%s'", 
-                    "substitutes": {b"[": b"\]", b"{": b"\}", b"<": b"\>", b"(": b"\)", b"?": b"\?", b".": b"\.", b"^": b"\^", b"$": b"\$", b"\\": b"\\\\", b"*": b"\*",
-                        b"+": b"\+", b"|": b"\|"}},
+                    "substitutes": {
+                        b"[": b"\]", 
+                        b"{": b"\}", 
+                        b"<": b"\>", 
+                        b"(": b"\)", 
+                        b"?": b"\?", 
+                        b".": b"\.", 
+                        b"^": b"\^", 
+                        b"$": b"\$", 
+                        b"\\": b"\\\\", 
+                        b"*": b"\*",
+                        b"+": b"\+", 
+                        b"|": b"\|",
+                        # there may be a closing brackets also, we have to escape them too
+                        b"]": b"\]", 
+                        b"}": b"\}", 
+                        b">": b"\>", 
+                        b")": b"\)"}},
                 {"start": re.compile(b"'", flags=re.I), "end": re.compile(b"'")}],
             "comment":[
                 {"start": re.compile(b'(\s|^)\-\-'), "end": re.compile(b'\n')},
@@ -207,6 +223,8 @@ class PLSQLNormalizer():
                 if _result and _match.start() >= _result.get("match").start():
                     # not a first inc, out of interest
                     continue
+
+                logging.log(1, "Found context: [%s], match: [%s]" % (_k, _match))
 
                 _result = {"context": _k, "match": _match, "end": self._make_reg_end(_regx, _match)}
 

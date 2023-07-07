@@ -1,6 +1,6 @@
 from setuptools import setup
 
-__version="1.0.2"
+__version="1.0.3"
 
 spec = {
     "name": "oc-sql-helpers",
